@@ -1,0 +1,20 @@
+<% content_for :page_title, 'New Post' %>
+<h1><%= content_for :page_title %></h1>
+
+<%= form_for @post do |f| %>
+  <fieldset id="basic_post_data">
+    <legend>Post</legend>
+
+    <p>
+      <%= f.label      :title %>
+      <%= f.text_field :title %>
+    </p>
+
+    <p>
+      <%= f.label     :body %>
+      <%= f.text_area :body %>
+    </p>
+
+    <p><%= submit_tag 'Submit' %></p>
+  </fieldset>
+<% end %>

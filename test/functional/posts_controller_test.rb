@@ -6,5 +6,41 @@ class PostsControllerTest < ActionController::TestCase
 
     assert_routing({path: '/posts', method: :post},
                    {controller: "posts", action: "create"})
+
+    assert_difference "Post.count" do
+      post :create, post: {
+        title: 'My third post', body: 'Lorem ipsum'
+      }
+
+      assert_equal Mime[:html], response.content_type
+      assert_not_nil assigns(:post)
+
+      assert_redirected_to post_path(assigns(:post))
+    end
+  end
+
+  test "GET to /posts/new as HTML" do
+    request.env["HTTP_ACCEPT"] = Mime[:html]
+
+    assert_routing({path: '/posts/new', method: :get},
+                   {controller: "posts", action: "new"})
+
+    get :new
+
+    assert_not_nil assigns(:post)
+    assert assigns(:post).new_record?
+
+    assert_select 'title', 'Blog | New Post'
+    assert_select 'h1', 'New Post'
+
+    assert_select 'form[action=/posts][method=post]' do
+      assert_select "label[for=post_title]", 'Title'
+      assert_select "input[type=text][name='post[title]']"
+
+      assert_select "label[for=post_body]", 'Body'
+      assert_select "textarea[name='post[body]']"
+
+      assert_select 'input[type=submit][value=Submit]'
+    end
   end
 end
