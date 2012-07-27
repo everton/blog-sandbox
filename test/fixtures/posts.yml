@@ -1,9 +1,9 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+<% require 'lorem_ipsum' %>
 
-one:
-  title: MyString
-  body: MyText
+my_first_postage:
+  title: First Post
+  body: <%= lorem %>
 
-two:
-  title: MyString
-  body: MyText
+my_second_postage:
+  title: Oh, now I'm a f**cking awesome writter
+  body: <%= lorem %>
