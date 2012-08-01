@@ -238,6 +238,7 @@ class PostsControllerTest < ActionController::TestCase
       delete :destroy, id: post.id
     end
 
+    assert_equal 'Post was successfully deleted', flash[:notice]
     assert_redirected_to posts_path
   end
 end

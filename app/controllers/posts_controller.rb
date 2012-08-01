@@ -33,8 +33,11 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    @post = Post.find params[:id]
-    @post.destroy
+    @post = Post.destroy params[:id]
+    if @post.destroyed?
+      flash[:notice] = 'Post was successfully deleted'
+    end
+
     respond_with @post
   end
 end
