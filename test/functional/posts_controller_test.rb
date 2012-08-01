@@ -24,6 +24,18 @@ class PostsControllerTest < ActionController::TestCase
     end
   end
 
+  test "GET to /posts as XML" do
+    assert_routing({path: '/posts', method: :get, format: :xml},
+                   {controller: "posts", action: "index"})
+
+    assert_success_on_get_to :index, as: :xml
+
+    assert_not_nil assigns(:posts)
+    assert_equal Post.all, assigns(:posts)
+
+    assert_equal Post.all.to_xml, response.body
+  end
+
   test "GET to /posts/1 as HTML" do
     post = posts(:my_first_postage)
 
@@ -38,6 +50,20 @@ class PostsControllerTest < ActionController::TestCase
     assert_action_title post.title
 
     assert_select 'article#post_body', post.body
+  end
+
+  test "GET to /posts/1 as XML" do
+    post = posts(:my_first_postage)
+
+    assert_routing({path: "/posts/#{post.id}", method: :get, format: :xml},
+                   {controller: "posts", action: "show", id: post.to_param})
+
+    assert_success_on_get_to :show, id: post.id, as: :xml
+
+    assert_not_nil assigns(:post)
+    assert_equal post, assigns(:post)
+
+    assert_equal post.to_xml, response.body
   end
 
   test "POST to /posts as HTML with valid parameters" do
