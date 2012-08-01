@@ -20,7 +20,7 @@ class ActiveSupport::TestCase
     format = options.delete(:as) || :html
     request.env["HTTP_ACCEPT"] = Mime[format]
 
-    get action
+    get action, options
 
     assert_response :success
     assert_equal Mime[format], response.content_type

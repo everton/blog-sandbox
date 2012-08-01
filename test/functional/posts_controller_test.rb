@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class PostsControllerTest < ActionController::TestCase
+  fixtures :posts
+
   test "GET to /posts as HTML" do
     assert_routing({path: '/posts', method: :get},
                    {controller: "posts", action: "index"})
@@ -20,6 +22,22 @@ class PostsControllerTest < ActionController::TestCase
                       {count: 1, text: post.title})
       end
     end
+  end
+
+  test "GET to /posts/1 as HTML" do
+    post = posts(:my_first_postage)
+
+    assert_routing({path: "/posts/#{post.id}", method: :get},
+                   {controller: "posts", action: "show", id: post.to_param})
+
+    assert_success_on_get_to :show, id: post.id, as: :html
+
+    assert_not_nil     assigns(:post)
+    assert_equal post, assigns(:post)
+
+    assert_action_title post.title
+
+    assert_select 'article#post_body', post.body
   end
 
   test "POST to /posts as HTML with valid parameters" do
