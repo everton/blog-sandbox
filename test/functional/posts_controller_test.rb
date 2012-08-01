@@ -158,4 +158,45 @@ class PostsControllerTest < ActionController::TestCase
       assert_redirected_to post_path(assigns(:post))
     end
   end
+
+  test "PUT to /posts/1 as HTML with INVALID parameters" do
+    post = posts(:my_first_postage)
+
+    assert_routing({path: "/posts/#{post.id}", method: :put},
+                   {controller: "posts", action: "update", id: post.to_param})
+
+    request.env["HTTP_ACCEPT"] = Mime[:html]
+
+    assert_no_difference "Post.count" do
+      put :update, id: post.id, post: {
+        title: '     '
+      }
+
+      assert_response :success
+      assert_template :edit
+      assert_equal Mime[:html], response.content_type
+
+      assert_not_nil  assigns(:post)
+      assert_equal 1, assigns(:post).errors.count
+
+      assert_action_title "Edit post #{post.title}"
+
+      assert_select "form[action=/posts/#{post.id}][method=post]" do
+        assert_select "input[type=hidden][name='_method'][value='put']"
+
+        assert_select '#error_explanation' do
+          assert_select 'li', "Title can't be blank"
+        end
+
+        assert_select "label[for=post_title]", 'Title'
+        assert_select "input[type=text][name='post[title]']" +
+          "[value='     ']"
+
+        assert_select "label[for=post_body]", 'Body'
+        assert_select "textarea[name='post[body]']", post.body
+
+        assert_select 'input[type=submit][value=Submit]'
+      end
+    end
+  end
 end
