@@ -1,6 +1,33 @@
 require 'test_helper'
 
 class PostsControllerTest < ActionController::TestCase
+  test "GET to /posts as HTML" do
+    assert_routing({path: '/posts', method: :get},
+                   {controller: "posts", action: "index"})
+
+    request.env["HTTP_ACCEPT"] = Mime[:html]
+
+    get :index
+
+    assert_response :success
+    assert_equal Mime[:html], response.content_type
+
+    assert_not_nil assigns(:posts)
+    assert_equal Post.all, assigns(:posts)
+
+    assert_select "title", "Blog | Posts"
+    assert_select "h1", "Posts"
+
+    assert_select 'ol#posts' do
+      assert_select 'li', Post.count
+
+      Post.all.each do |post|
+        assert_select("li a[href=#{post_path(post)}]",
+                      {count: 1, text: post.title})
+      end
+    end
+  end
+
   test "POST to /posts as HTML with valid parameters" do
     request.env["HTTP_ACCEPT"] = Mime[:html]
 
