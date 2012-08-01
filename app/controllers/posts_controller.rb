@@ -20,4 +20,9 @@ class PostsController < ApplicationController
     @post = Post.create params[:post]
     respond_with @post
   end
+
+  def edit
+    @post = Post.find params[:id]
+    respond_with @post
+  end
 end

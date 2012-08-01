@@ -109,4 +109,32 @@ class PostsControllerTest < ActionController::TestCase
       end
     end
   end
+
+  test "GET to /posts/1/edit as HTML" do
+    post = posts(:my_first_postage)
+
+    assert_routing({path: "/posts/#{post.id}/edit", method: :get},
+                   {controller: "posts", action: "edit", id: post.to_param})
+
+    assert_success_on_get_to :edit, id: post.to_param, as: :html
+
+    assert_not_nil     assigns(:post)
+    assert_equal post, assigns(:post)
+
+    assert_action_title "Edit post #{post.title}"
+
+    assert_select "form[action=/posts/#{post.id}][method=post]" do
+      assert_select "input[type=hidden][name='_method'][value='put']"
+
+      assert_select "label[for=post_title]", 'Title'
+      assert_select "input[type=text][name='post[title]']" +
+        "[value='#{post.title}']"
+
+      assert_select "label[for=post_body]", 'Body'
+      assert_select "textarea[name='post[body]']", post.body
+
+      assert_select 'input[type=submit][value=Submit]'
+    end
+  end
+
 end
