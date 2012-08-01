@@ -199,4 +199,19 @@ class PostsControllerTest < ActionController::TestCase
       end
     end
   end
+
+  test "DELETE to /posts/1 as HTML" do
+    post = posts(:my_first_postage)
+
+    assert_routing({path: "/posts/#{post.id}", method: :delete},
+                   {controller: "posts", action: "destroy", id: post.to_param})
+
+    request.env["HTTP_ACCEPT"] = Mime[:html]
+
+    assert_difference "Post.count", -1 do
+      delete :destroy, id: post.id
+    end
+
+    assert_redirected_to posts_path
+  end
 end
