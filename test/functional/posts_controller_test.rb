@@ -5,18 +5,12 @@ class PostsControllerTest < ActionController::TestCase
     assert_routing({path: '/posts', method: :get},
                    {controller: "posts", action: "index"})
 
-    request.env["HTTP_ACCEPT"] = Mime[:html]
-
-    get :index
-
-    assert_response :success
-    assert_equal Mime[:html], response.content_type
+    assert_success_on_get_to :index, as: :html
 
     assert_not_nil assigns(:posts)
     assert_equal Post.all, assigns(:posts)
 
-    assert_select "title", "Blog | Posts"
-    assert_select "h1", "Posts"
+    assert_action_title 'Posts'
 
     assert_select 'ol#posts' do
       assert_select 'li', Post.count
@@ -47,21 +41,15 @@ class PostsControllerTest < ActionController::TestCase
   end
 
   test "GET to /posts/new as HTML" do
-    request.env["HTTP_ACCEPT"] = Mime[:html]
-
     assert_routing({path: '/posts/new', method: :get},
                    {controller: "posts", action: "new"})
 
-    get :new
-
-    assert_response :success
-    assert_equal Mime[:html], response.content_type
+    assert_success_on_get_to :new, as: :html
 
     assert_not_nil assigns(:post)
     assert assigns(:post).new_record?
 
-    assert_select 'title', 'Blog | New Post'
-    assert_select 'h1', 'New Post'
+    assert_action_title 'New Post'
 
     assert_select 'form[action=/posts][method=post]' do
       assert_select "label[for=post_title]", 'Title'
