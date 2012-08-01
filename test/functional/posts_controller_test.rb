@@ -137,4 +137,25 @@ class PostsControllerTest < ActionController::TestCase
     end
   end
 
+  test "PUT to /posts/1 as HTML with valid parameters" do
+    post = posts(:my_first_postage)
+
+    assert_routing({path: "/posts/#{post.id}", method: :put},
+                   {controller: "posts", action: "update", id: post.to_param})
+
+    request.env["HTTP_ACCEPT"] = Mime[:html]
+
+    assert_no_difference "Post.count" do
+      put :update, id: post.id, post: {
+        title: 'My edited post'
+      }
+
+      assert_equal Mime[:html], response.content_type
+
+      assert_not_nil assigns(:post)
+      assert_equal 'My edited post', assigns(:post).title
+
+      assert_redirected_to post_path(assigns(:post))
+    end
+  end
 end
