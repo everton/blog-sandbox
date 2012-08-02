@@ -1,11 +1,26 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+<% require 'lorem_ipsum' %>
 
-one:
-  post: 
-  author: MyString
-  body: MyText
+first_comment_on_first_postage:
+  post_id: my_first_postage
+  author: Everton J. Carpes
+  body: <%= lorem %>
 
-two:
-  post: 
-  author: MyString
-  body: MyText
+second_comment_on_first_postage:
+  post: my_first_postage
+  author: Rodrigo Gomes
+  body: <%= lorem %>
+
+third_comment_on_first_postage:
+  post: my_first_postage
+  author: Fernando Braz
+  body: <%= lorem %>
+
+first_comment_on_second_postage:
+  post: my_second_postage
+  author: John
+  body: <%= lorem %>
+
+second_comment_on_second_postage:
+  post: my_second_postage
+  author: Paul
+  body: <%= lorem %>
