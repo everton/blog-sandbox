@@ -25,4 +25,44 @@ class ActiveSupport::TestCase
     assert_response :success
     assert_equal Mime[format], response.content_type
   end
+
+  def assert_order_ascending(collection, msg = nil)
+    msg ||= "<#{collection.inspect}> expected to be on ascending order"
+
+    ordered = collection.each_cons(2).all? do |expected_lesser, expected_greater|
+      expected_lesser <= expected_greater
+    end
+
+    assert ordered, msg
+  end
+
+  def assert_order_ascending(collection, msg = nil)
+    msg ||= "<#{collection.inspect}> expected to be on ascending order"
+
+    ordered = collection.each_cons(2).all? do |expected_lesser, expected_greater|
+      expected_lesser <= expected_greater
+    end
+
+    assert ordered, msg
+  end
+
+  def assert_order_ascending(collection, msg = nil)
+    msg ||= "<#{collection.inspect}> expected to be on ascending order"
+
+    ordered = collection.each_cons(2).all? do |expected_lesser, expected_greater|
+      expected_lesser <= expected_greater
+    end
+
+    assert ordered, msg
+  end
+
+  def assert_order_descending(collection, msg = nil)
+    msg ||= "<#{collection.inspect}> expected to be on descending order"
+
+    ordered = collection.each_cons(2).all? do |expected_lesser, expected_greater|
+      expected_lesser >= expected_greater
+    end
+
+    assert ordered, msg
+  end
 end

@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class PostTest < ActiveSupport::TestCase
-  fixtures :posts
+  fixtures :posts, :comments
 
   test "count post" do
     assert_equal 2, Post.count
@@ -74,5 +74,13 @@ class PostTest < ActiveSupport::TestCase
     assert_raises ActiveRecord::RecordNotFound do
       Post.find post.id
     end
+  end
+
+  test "comments relationship" do
+    post = posts(:my_first_postage)
+
+    assert_equal 3, post.comments.count
+
+    assert_order_ascending post.comments.map(&:created_at)
   end
 end

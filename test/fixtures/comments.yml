@@ -1,26 +1,36 @@
 <% require 'lorem_ipsum' %>
 
 first_comment_on_first_postage:
-  post_id: my_first_postage
+  post: my_first_postage
   author: Everton J. Carpes
   body: <%= lorem %>
+  created_at: <%= 9.months.ago %>
+  updated_at: <%= 9.months.ago %>
 
 second_comment_on_first_postage:
   post: my_first_postage
   author: Rodrigo Gomes
   body: <%= lorem %>
+  created_at: <%= 6.months.ago %>
+  updated_at: <%= 6.months.ago %>
 
 third_comment_on_first_postage:
   post: my_first_postage
   author: Fernando Braz
   body: <%= lorem %>
+  created_at: <%= 3.months.ago %>
+  updated_at: <%= 3.months.ago %>
 
 first_comment_on_second_postage:
   post: my_second_postage
   author: John
   body: <%= lorem %>
+  created_at: <%= 6.months.ago %>
+  updated_at: <%= 6.months.ago %>
 
 second_comment_on_second_postage:
   post: my_second_postage
   author: Paul
   body: <%= lorem %>
+  created_at: <%= 3.months.ago %>
+  updated_at: <%= 3.months.ago %>
